@@ -1,6 +1,7 @@
 # Simon
 import pygame, sys, random, time
 from pygame.locals import *
+from time import sleep
 
 pygame.init()
 DISPLAY = pygame.display.set_mode((700, 500))
@@ -8,16 +9,12 @@ pygame.display.set_caption('Simon')
 fpsClock = pygame.time.Clock()
 fpsClock.tick(60)
 
-#Storing
-pattern = [] #color pattern
-score = 0    #
-
 #Colors
 white        = (255, 255, 255)
 black        = (0, 0, 0)
 
 yellow       = (155, 155, 0)
-yellow_light = (255, 255, 0)
+yellow_light = (255, 255, 0,)
 blue         = (0, 0, 155)
 blue_light   = (0, 0, 255)
 red          = (155, 0, 0)
@@ -42,35 +39,116 @@ directionsText = font2.render('Use the arrow keys to repeat the pattern on the s
 directionsRect  = directionsText.get_rect()
 directionsRect.center = (350, 310)
 
-scoreText = font2.render('Score:', True, white, black)
-scoreRect = scoreText.get_rect()
-scoreRect.center = (550, 30)
+correctText = font2.render('Correct!', True, white, black)
+correctRect = correctText.get_rect()
+correctRect.center = (350, 420)
 
-intro_pic = 'Users/s.miles1313/Desktop/images.png'
+incorrectText = font2.render('Incorrect.', True, white, black)
+incorrectRect = incorrectText.get_rect()
+incorrectRect.center = (350, 420)
+
+#scoreText = font2.render('Score:', True, white, black)
+#scoreRect = scoreText.get_rect()
+#scoreRect.center = (550, 30)
+
+#intro_pic = 'Users/s.miles1313/Desktop/images.png'
 
 #Buttons
-yellow_rect = pygame.Rect(300, 100, 100, 100)
-#pygame.draw.rect(DISPLAY, yellow, yellow_rect)
+top_mid    = pygame.Rect(300, 100, 100, 100)
+#yellow_rect = pygame.draw.rect(DISPLAY, yellow, top_mid)
 
-blue_rect   = pygame.Rect(300, 250, 100, 100)
-#pygame.draw.rect(DISPLAY, blue, blue_rect)
+bottom_mid = pygame.Rect(300, 250, 100, 100)
+#blue_rect  = pygame.draw.rect(DISPLAY, blue, bottom_mid)
 
-red_rect    = pygame.Rect(450, 250, 100, 100)
-#pygame.draw.rect(DISPLAY, red, red_rect)
+bottom_right = pygame.Rect(450, 250, 100, 100)
+#red_rect = pygame.draw.rect(DISPLAY, red, bottom_right)
 
-green_rect  = pygame.Rect(150, 250, 100, 100)
-#pygame.draw.rect(DISPLAY, green, green_rect)
+bottom_left  = pygame.Rect(150, 250, 100, 100)
+#green_rect  = pygame.draw.rect(DISPLAY, green, bottom_left)
 
 patternspeed = 450 #milliseconds
 patterndelay = 200
 
-def quit():
+#K_UP                  up arrow
+#K_DOWN                down arrow
+#K_RIGHT               right arrow
+#K_LEFT                left arrow
+
+def main():
+
+	format()
+
+	#Storing
+	pattern = [] # color pattern
+	player_pattern = [] # player's pattern 
+	score = 0    # player's score
+	wait_for_input = False # true when player has to repeat pattern
+	color_choices = ['y','b','r','g'] # different colors
+
 	while True:
-		for event in pygame.event.get():
-			if event.type == QUIT:
+		#allowquit()
+
+		button = None
+
+		scoreText = font2.render('Score: ' + str(score), True, white, black)
+		scoreRect = scoreText.get_rect()
+		scoreRect.center = (550, 30)
+		DISPLAY.blit(scoreText, scoreRect)
+		#allowquit()
+
+		if wait_for_input == False:
+			player_pattern.clear()
+			pattern.append(random.choice(color_choices))
+			for color in pattern:
+				light_buttons(color)
+				wait_for_input = True
+
+		else:
+			while len(player_pattern) != len(pattern):
+
+				for event in pygame.event.get():
+					if event.type == KEYDOWN:
+						if event.key == K_UP:
+							button = 'y'							
+							player_pattern.append('y')
+							light_buttons(button)							
+						elif event.key == K_DOWN:
+							button = 'b'							
+							player_pattern.append('b')
+							light_buttons(button)							
+						elif event.key == K_LEFT:
+							button = 'g'							
+							player_pattern.append('g')
+							light_buttons(button)							
+						elif event.key == K_RIGHT:
+							button = 'r'							
+							player_pattern.append('r')
+							light_buttons(button)
+
+			if player_pattern == pattern:
+				DISPLAY.blit(correctText, correctRect)
+				score += 1
+				wait_for_input = False
+
+			elif player_pattern != pattern:
+				DISPLAY.blit(incorrectText, incorrectRect)
+				pygame.display.update()
 				pygame.quit()
 				sys.exit()
-		pygame.display.update()
+			pygame.display.update()
+
+	pygame.display.update()
+
+def allowquit():
+	#while True:
+	for event in pygame.event.get():
+		if event.type == QUIT:
+			pygame.quit()
+			sys.exit()
+		else:
+			break
+	pygame.display.update()
+
 
 def beginning():
 
@@ -82,7 +160,7 @@ def beginning():
 			for event in pygame.event.get():
 				if event.type == KEYDOWN:
 					if event.key == K_RETURN:
-						format()
+						main()
 						break
 				elif event.type == QUIT:
 					pygame.quit()
@@ -95,30 +173,61 @@ def beginning():
 
 def format():
 	DISPLAY.fill(screen_color)
-
-	pygame.draw.rect(DISPLAY, yellow, yellow_rect)
-	pygame.draw.rect(DISPLAY, blue, blue_rect)
-	pygame.draw.rect(DISPLAY, red, red_rect)
-	pygame.draw.rect(DISPLAY, green, green_rect)
-
-	DISPLAY.blit(scoreText, scoreRect)
+	
+	yellow_rect = pygame.draw.rect(DISPLAY, yellow, top_mid)
+	blue_rect  = pygame.draw.rect(DISPLAY, blue, bottom_mid)
+	red_rect = pygame.draw.rect(DISPLAY, red, bottom_right)
+	green_rect  = pygame.draw.rect(DISPLAY, green, bottom_left)
 
 
-#def light_buttons(color):
-	#if color == yellow:
+def light_buttons(color):
+	#while True:
+		if color == 'y':
+			yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
+			pygame.display.update()
+			#pygame.time.delay(500)
+			sleep(500)
+			yellow_rect = pygame.draw.rect(DISPLAY, yellow, top_mid)
+			#pygame.time.delay(500)
+			sleep(500)
+			pygame.display.update()
+
+		elif color == 'b':
+			blue_rect  = pygame.draw.rect(DISPLAY, blue_light, bottom_mid)
+			pygame.display.update()
+			pygame.time.delay(500)
+			blue_rect  = pygame.draw.rect(DISPLAY, blue, bottom_mid)
+			pygame.time.delay(500)
+			pygame.display.update()
+
+		elif color == 'r':
+			red_rect = pygame.draw.rect(DISPLAY, red_light, bottom_right)
+			pygame.display.update()
+			pygame.time.delay(500)
+			red_rect = pygame.draw.rect(DISPLAY, red, bottom_right)
+			pygame.time.delay(500)
+			pygame.display.update()
+
+		elif color == 'g':
+			green_rect  = pygame.draw.rect(DISPLAY, green_light, bottom_left)
+			pygame.display.update()
+			pygame.time.delay(500)
+			green_rect  = pygame.draw.rect(DISPLAY, green, bottom_left)
+			pygame.time.delay(500)
+			pygame.display.update()
 
 
 
-#def main():
 
 
+
+		 #pygame.display.update()
 
 
 
 
 beginning()
-quit()
-
+#main()
 
 
 
