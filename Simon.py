@@ -1,7 +1,6 @@
 # Simon
 import pygame, sys, random, time
 from pygame.locals import *
-from time import sleep
 
 pygame.init()
 DISPLAY = pygame.display.set_mode((700, 500))
@@ -26,6 +25,7 @@ screen_color = black
 #Text
 font1 = pygame.font.Font('freesansbold.ttf', 46)
 font2 = pygame.font.Font('freesansbold.ttf', 18)
+font3 = pygame.font.Font('freesansbold.ttf', 22)
 
 titleText = font1.render('Simon', True, black, white)
 titleRect = titleText.get_rect()
@@ -46,6 +46,21 @@ correctRect.center = (350, 420)
 incorrectText = font2.render('Incorrect.', True, white, black)
 incorrectRect = incorrectText.get_rect()
 incorrectRect.center = (350, 420)
+
+averageText = font2.render('Your average is ' + str() + '.', True, white, black)
+averageRect = averageText.get_rect()
+averageRect.center = (350, 250)
+
+
+endText1 = font3.render('Do you want to play again?', True, white, black)
+endRect1 = endText1.get_rect()
+endRect1.center = (350, 400)
+
+endText2 = font2.render('If you do, press "y", otherwise close this window or press "esc" to exit the game.',True, white, black)
+endRect2 = endText2.get_rect()
+endRect2.center = (350,435)
+
+
 
 #scoreText = font2.render('Score:', True, white, black)
 #scoreRect = scoreText.get_rect()
@@ -85,8 +100,10 @@ def main():
 	wait_for_input = False # true when player has to repeat pattern
 	color_choices = ['y','b','r','g'] # different colors
 
+	average = [] # Will need to hold previous scores then find the mean #average.append(score)
+
 	while True:
-		#allowquit()
+		#quit()
 
 		button = None
 
@@ -94,7 +111,8 @@ def main():
 		scoreRect = scoreText.get_rect()
 		scoreRect.center = (550, 30)
 		DISPLAY.blit(scoreText, scoreRect)
-		#allowquit()
+
+		quit()
 
 		if wait_for_input == False:
 			player_pattern.clear()
@@ -132,6 +150,7 @@ def main():
 
 			elif player_pattern != pattern:
 				DISPLAY.blit(incorrectText, incorrectRect)
+				end()
 				pygame.display.update()
 				pygame.quit()
 				sys.exit()
@@ -139,15 +158,18 @@ def main():
 
 	pygame.display.update()
 
-def allowquit():
+def quit():
+	for event in pygame.event.get(QUIT): 
+		pygame.quit()
+		sys.exit()
 	#while True:
-	for event in pygame.event.get():
-		if event.type == QUIT:
-			pygame.quit()
-			sys.exit()
-		else:
-			break
-	pygame.display.update()
+	#	for event in pygame.event.get():
+	#		if event.type == QUIT:
+	#			pygame.quit()
+	#			sys.exit()
+	#		else:
+	#			break
+	#	pygame.display.update()
 
 
 def beginning():
@@ -186,10 +208,8 @@ def light_buttons(color):
 			yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
 			pygame.display.update()
 			#pygame.time.delay(500)
-			sleep(500)
 			yellow_rect = pygame.draw.rect(DISPLAY, yellow, top_mid)
 			#pygame.time.delay(500)
-			sleep(500)
 			pygame.display.update()
 
 		elif color == 'b':
@@ -224,10 +244,39 @@ def light_buttons(color):
 		 #pygame.display.update()
 
 
+def end():
+	#pygame.time.delay(300)
+	DISPLAY.fill(screen_color)
+
+	#DISPLAY.blit(scoreText,(325, 225))
+
+	#DISPLAY.blit(averageText, averageRect)
+	DISPLAY.blit(endText1, endRect1)
+	DISPLAY.blit(endText2, endRect2)
+	quit()
+	pygame.display.update()
+
+
 
 
 beginning()
 #main()
+#end()
 
+#/////////////////////////////////////////////////////////
+#last = pygame.time.get_ticks()
+
+#yellow_rect = pygame.draw.rect(DISPLAY, yellow, top_mid)
+#blue_rect  = pygame.draw.rect(DISPLAY, blue, bottom_mid)
+#red_rect = pygame.draw.rect(DISPLAY, red, bottom_right)
+#green_rect  = pygame.draw.rect(DISPLAY, green, bottom_left)
+#pygame.display.update()
+#pygame.time.delay(1000)
+
+#print (last)
+
+#///////////////////
+#yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
+#pygame.display.update()
 
 
