@@ -14,7 +14,7 @@ white        = (255, 255, 255)
 black        = (0, 0, 0)
 
 yellow       = (155, 155, 0)
-yellow_light = (255, 255, 0,)
+yellow_light = (255, 255, 0)
 blue         = (0, 0, 155)
 blue_light   = (0, 0, 255)
 red          = (155, 0, 0)
@@ -44,6 +44,10 @@ directionsText = font2.render(' Use the arrow keys to repeat the pattern on the 
 directionsRect  = directionsText.get_rect()
 directionsRect.center = (350, 330)
 
+playText = font2.render(' Begin Playing ', True, black, white) #Button to click to begin playing and first pattern
+playRect = playText.get_rect()
+playRect.center = (350, 400)
+
 correctText = font2.render('Correct!', True, white, black) #Shows when player repeats pattern correctly
 correctRect = correctText.get_rect()
 correctRect.center = (350, 420)
@@ -61,7 +65,7 @@ endText1 = font3.render('Do you want to play again?', True, white, black) #Asks 
 endRect1 = endText1.get_rect()
 endRect1.center = (350, 400)
 
-endText2 = font2.render('If you do, press "y", otherwise close this window or press "esc" to exit the game.',True, white, black) 
+endText2 = font2.render('If you do, press "y", otherwise close this window.',True, white, black) 
 endRect2 = endText2.get_rect()
 endRect2.center = (350,435)
 
@@ -148,49 +152,84 @@ def simon_beginning():
 
 def button_format():
 	DISPLAY.fill(screen_color)
-	
-	yellow_rect = pygame.draw.rect(DISPLAY, yellow, top_mid)
-	blue_rect  = pygame.draw.rect(DISPLAY, blue, bottom_mid)
-	red_rect = pygame.draw.rect(DISPLAY, red, bottom_right)
-	green_rect  = pygame.draw.rect(DISPLAY, green, bottom_left)
-	
+
+	yellow_rect = pygame.draw.rect(DISPLAY, white, top_mid)
+	blue_rect  = pygame.draw.rect(DISPLAY, white, bottom_mid)
+	red_rect = pygame.draw.rect(DISPLAY, white, bottom_right)
+	green_rect  = pygame.draw.rect(DISPLAY, white, bottom_left)
 	pygame.display.update()
+
+def simon_play():
+
+	DISPLAY.blit(playText, playRect)
+	pygame.display.update()
+
+	# playRect == rect(277, 390, 147, 21)
+
+	p = True
+	while p == True:
+		for event in pygame.event.get():
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				mousey = pygame.mouse.get_pos()
+				if 277 + 147 > mousey[0] > 277 and 390 + 21 > mousey[1] > 390:
+					pygame.draw.rect(DISPLAY, black, playRect)
+					button_format()
+					pygame.display.update()
+					p = False
 
 def light_buttons(color):
 	#while True:
 		if color == 'y':
-			yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
-			pygame.display.update()
+			print('top_mid')
+			loop = 0
+			while loop < 15:
+				yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
+				pygame.display.update()
+				#pygame.time.delay(500)
+				loop += 1
+			yellow_rect = pygame.draw.rect(DISPLAY, white, top_mid)
 			#pygame.time.delay(500)
-			yellow_rect = pygame.draw.rect(DISPLAY, yellow, top_mid)
-			#pygame.time.delay(500)
 			pygame.display.update()
+			
 
 		elif color == 'b':
-			blue_rect  = pygame.draw.rect(DISPLAY, blue_light, bottom_mid)
-			pygame.display.update()
+			print('bottom_mid')
+			loop = 0
+			while loop < 15:
+				blue_rect  = pygame.draw.rect(DISPLAY, blue_light, bottom_mid)
+				pygame.display.update()
+				#pygame.time.delay(500)
+				loop += 1
+			blue_rect  = pygame.draw.rect(DISPLAY, white, bottom_mid)
 			#pygame.time.delay(500)
-			blue_rect  = pygame.draw.rect(DISPLAY, blue, bottom_mid)
-			#pygame.time.delay(500)
 			pygame.display.update()
+			
 
 		elif color == 'r':
-			red_rect = pygame.draw.rect(DISPLAY, red_light, bottom_right)
-			pygame.display.update()
+			print('bottom_right')
+			loop = 0
+			while loop < 15:
+				red_rect = pygame.draw.rect(DISPLAY, red_light, bottom_right)
+				pygame.display.update()
+				#pygame.time.delay(500)
+				loop += 1
+			red_rect = pygame.draw.rect(DISPLAY, white, bottom_right)
 			#pygame.time.delay(500)
-			red_rect = pygame.draw.rect(DISPLAY, red, bottom_right)
-			#pygame.time.delay(500)
 			pygame.display.update()
+		
 
 		elif color == 'g':
-			green_rect  = pygame.draw.rect(DISPLAY, green_light, bottom_left)
-			pygame.display.update()
+			print('bottom_left')
+			loop = 0
+			while loop < 15:
+				green_rect  = pygame.draw.rect(DISPLAY, green_light, bottom_left)
+				pygame.display.update()
+				#pygame.time.delay(500)
+				loop += 1
+			green_rect  = pygame.draw.rect(DISPLAY, white, bottom_left)
 			#pygame.time.delay(500)
-			green_rect  = pygame.draw.rect(DISPLAY, green, bottom_left)
-			#pygame.time.delay(500)
 			pygame.display.update()
-
-
+	
 
 
 
@@ -213,6 +252,7 @@ def simon_end():
 def simon_main():
 
 	simon_beginning()
+	simon_play()
 
 	#Storing
 	pattern = [] # color pattern
@@ -234,7 +274,7 @@ def simon_main():
 		scoreRect.center = (550, 30)
 		DISPLAY.blit(scoreText, scoreRect)
 
-		game_quit()
+		#game_quit()
 
 		if wait_for_input == False:
 			player_pattern.clear()
@@ -264,6 +304,32 @@ def simon_main():
 							button = 'r'							
 							player_pattern.append('r')
 							light_buttons(button)
+					elif event.type == pygame.MOUSEBUTTONDOWN:
+						mousey = pygame.mouse.get_pos()
+						#yellow
+						if  300 + 100 > mousey[0] > 300 and 100 + 100 > mousey[1] > 100:
+							button = 'y'							
+							player_pattern.append('y')
+							light_buttons(button)	
+
+						#blue
+						elif 300 + 100 > mousey[0] > 300 and 250 + 100 > mousey[1] > 250:
+							button = 'b'							
+							player_pattern.append('b')
+							light_buttons(button)	
+
+						#green
+						elif 450 + 100 > mousey[0] > 450 and 250 + 100 > mousey[1] > 250:
+							button = 'g'							
+							player_pattern.append('g')
+							light_buttons(button)	
+
+						#red
+						elif 150 + 100 > mousey[0] > 150 and 250 + 100 > mousey[1] > 250:
+							button = 'r'							
+							player_pattern.append('r')
+							light_buttons(button)	
+			
 
 			if player_pattern == pattern:
 				DISPLAY.blit(correctText, correctRect)
@@ -273,9 +339,9 @@ def simon_main():
 			elif player_pattern != pattern:
 				DISPLAY.blit(incorrectText, incorrectRect)
 				simon_end()
-				pygame.display.update()
-				pygame.quit()
-				sys.exit()
+				#pygame.display.update()
+				#pygame.quit()
+				#sys.exit()
 			pygame.display.update()
 
 	pygame.display.update()
