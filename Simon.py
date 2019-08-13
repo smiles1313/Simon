@@ -106,10 +106,11 @@ def game_quit():
 	#			sys.exit()
 	#		else:
 	#			break
-		pygame.display.update()
+		#pygame.display.update()
 
 
 def simon_beginning():
+	game_quit()
 
 	DISPLAY.fill(white)
 
@@ -151,6 +152,7 @@ def simon_beginning():
 
 
 def button_format():
+	game_quit()
 	DISPLAY.fill(screen_color)
 
 	yellow_rect = pygame.draw.rect(DISPLAY, white, top_mid)
@@ -160,7 +162,7 @@ def button_format():
 	pygame.display.update()
 
 def simon_play():
-
+	game_quit()
 	DISPLAY.blit(playText, playRect)
 	pygame.display.update()
 
@@ -172,9 +174,16 @@ def simon_play():
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				mousey = pygame.mouse.get_pos()
 				if 277 + 147 > mousey[0] > 277 and 390 + 21 > mousey[1] > 390:
-					pygame.draw.rect(DISPLAY, black, playRect)
-					button_format()
-					pygame.display.update()
+					print('Hi')
+					game_quit()
+					#pygame.draw.rect(DISPLAY, black, playRect)
+					#button_format()
+					#pygame.draw.rect(DISPLAY, yellow_light, top_mid)
+					#pygame.draw.rect(DISPLAY, yellow_light, (10, 10, 50, 50))
+					#pygame.display.update()
+					#print ('Hello')
+	
+					#pygame.display.update()
 					p = False
 
 def light_buttons(color):
@@ -238,6 +247,7 @@ def light_buttons(color):
 
 
 def simon_end():
+	game_quit()
 	#pygame.time.delay(300)
 	DISPLAY.fill(screen_color)
 
@@ -246,13 +256,15 @@ def simon_end():
 	#DISPLAY.blit(averageText, averageRect)
 	DISPLAY.blit(endText1, endRect1)
 	DISPLAY.blit(endText2, endRect2)
-	game_quit()
+	#game_quit()
 	pygame.display.update()
+	game_quit()
 
 def simon_main():
 
 	simon_beginning()
 	simon_play()
+	game_quit()
 
 	#Storing
 	pattern = [] # color pattern
@@ -265,7 +277,7 @@ def simon_main():
 	average = [] # Will need to hold previous scores then find the mean #average.append(score)
 
 	while True:
-		#game_quit()
+		game_quit()
 
 		button = None
 
@@ -277,11 +289,15 @@ def simon_main():
 		#game_quit()
 
 		if wait_for_input == False:
-			player_pattern.clear()
-			pattern.append(random.choice(color_choices))
-			for color in pattern:
-				light_buttons(color)
-				wait_for_input = True
+			yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
+			pygame.display.update()
+			pattern = ['y']
+
+			#player_pattern.clear()
+			#pattern.append(random.choice(color_choices))
+			#for color in pattern:
+				#light_buttons(color)
+				#wait_for_input = True
 
 		else:
 			while len(player_pattern) != len(pattern):
