@@ -7,7 +7,7 @@ DISPLAY = pygame.display.set_mode((700, 500))
 pygame.display.set_caption('Simon')
 fpsClock = pygame.time.Clock()
 game_time = fpsClock.tick(60)
-print(game_time)
+#print(game_time)
 
 #Colors
 white        = (255, 255, 255)
@@ -111,7 +111,6 @@ def game_quit():
 
 def simon_beginning():
 	game_quit()
-
 	DISPLAY.fill(white)
 
 	DISPLAY.blit(titleText, titleRect)
@@ -121,6 +120,7 @@ def simon_beginning():
 	#print (exitRect) 
 	DISPLAY.blit(directionsText, directionsRect)
 	pygame.display.update()
+	
 
 	x = True 
 	while x == True:
@@ -162,25 +162,25 @@ def button_format():
 	pygame.display.update()
 
 def simon_play():
-	game_quit()
+	#game_quit()
 	DISPLAY.blit(playText, playRect)
 	pygame.display.update()
-
+	#game_quit()
+	
 	# playRect == rect(277, 390, 147, 21)
 
 	p = True
 	while p == True:
+		game_quit()
 		for event in pygame.event.get():
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				mousey = pygame.mouse.get_pos()
 				if 277 + 147 > mousey[0] > 277 and 390 + 21 > mousey[1] > 390:
-					print('Hi')
-					game_quit()
-					#pygame.draw.rect(DISPLAY, black, playRect)
+					pygame.draw.rect(DISPLAY, black, playRect)
 					#button_format()
 					#pygame.draw.rect(DISPLAY, yellow_light, top_mid)
 					#pygame.draw.rect(DISPLAY, yellow_light, (10, 10, 50, 50))
-					#pygame.display.update()
+					pygame.display.update()
 					#print ('Hello')
 	
 					#pygame.display.update()
@@ -245,6 +245,8 @@ def light_buttons(color):
 
 		 #pygame.display.update()
 
+#def storing(): #Will go to show score & average once game ends
+
 
 def simon_end():
 	game_quit()
@@ -256,9 +258,13 @@ def simon_end():
 	#DISPLAY.blit(averageText, averageRect)
 	DISPLAY.blit(endText1, endRect1)
 	DISPLAY.blit(endText2, endRect2)
-	#game_quit()
 	pygame.display.update()
 	game_quit()
+	#storing()
+	for event in pygame.event.get():
+		if event.type == KEYDOWN:
+			if event.key == K_y:
+				simon_main()
 
 def simon_main():
 
@@ -272,7 +278,7 @@ def simon_main():
 	score = 0    # player's score
 	wait_for_input = False # true when player has to repeat pattern
 	color_choices = ['y','b','r','g'] # different colors
-	print('Hello World!')
+	#print('Hello World!')
 
 	average = [] # Will need to hold previous scores then find the mean #average.append(score)
 
@@ -289,18 +295,20 @@ def simon_main():
 		#game_quit()
 
 		if wait_for_input == False:
-			yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
-			pygame.display.update()
-			pattern = ['y']
+			#yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
+			#pygame.display.update()
+			#pattern = ['y']
 
-			#player_pattern.clear()
-			#pattern.append(random.choice(color_choices))
-			#for color in pattern:
-				#light_buttons(color)
-				#wait_for_input = True
+			player_pattern.clear()
+			pattern.append(random.choice(color_choices))
+			for color in pattern:
+				light_buttons(color)
+				wait_for_input = True
+				print (pattern)
 
 		else:
 			while len(player_pattern) != len(pattern):
+				game_quit()
 
 				for event in pygame.event.get():
 					if event.type == KEYDOWN:
