@@ -50,11 +50,15 @@ playRect.center = (350, 400)
 
 correctText = font2.render('Correct!', True, white, black) #Shows when player repeats pattern correctly
 correctRect = correctText.get_rect()
-correctRect.center = (350, 420)
+correctRect.center = (150, 420)
 
 incorrectText = font2.render('Incorrect.', True, white, black) #Shows when the player's pattern is incorrect
 incorrectRect = incorrectText.get_rect()
-incorrectRect.center = (350, 420)
+incorrectRect.center = (150, 420)
+
+levelText = font3.render(' Next Level ', True, black, white)
+levelRect = levelText.get_rect()
+levelRect.center = (350, 420)
 
 averageText = font2.render('Your average score is ' + str() + '.', True, white, black) #Tells player their average score when played consecutively
 averageRect = averageText.get_rect()
@@ -190,28 +194,36 @@ def light_buttons(color):
 	#while True:
 		if color == 'y':
 			print('top_mid')
-			loop = 0
-			while loop < 15:
-				yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
-				pygame.display.update()
-				#pygame.time.delay(500)
-				loop += 1
+
+			yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
+			pygame.display.update(yellow_rect)
+			#print('i am sleeping')
+			#time.sleep(1)
+			#print('I slept for 10')
+			pygame.time.delay(1000)
+			pygame.event.pump()
+
 			yellow_rect = pygame.draw.rect(DISPLAY, white, top_mid)
-			#pygame.time.delay(500)
-			pygame.display.update()
+			#pygame.event.pump()
+			#pygame.time.delay(1500)
+			pygame.display.update(yellow_rect)
+			game_quit()
 			
 
 		elif color == 'b':
 			print('bottom_mid')
-			loop = 0
-			while loop < 15:
-				blue_rect  = pygame.draw.rect(DISPLAY, blue_light, bottom_mid)
-				pygame.display.update()
-				#pygame.time.delay(500)
-				loop += 1
+
+			blue_rect  = pygame.draw.rect(DISPLAY, yellow_light, bottom_mid)
+			pygame.display.update(blue_rect)
+
+			pygame.time.delay(1000)
+			pygame.event.pump()
+
+			
 			blue_rect  = pygame.draw.rect(DISPLAY, white, bottom_mid)
 			#pygame.time.delay(500)
-			pygame.display.update()
+			pygame.display.update(blue_rect)
+			game_quit()
 			
 
 		elif color == 'r':
@@ -225,6 +237,7 @@ def light_buttons(color):
 			red_rect = pygame.draw.rect(DISPLAY, white, bottom_right)
 			#pygame.time.delay(500)
 			pygame.display.update()
+			game_quit()
 		
 
 		elif color == 'g':
@@ -238,12 +251,70 @@ def light_buttons(color):
 			green_rect  = pygame.draw.rect(DISPLAY, white, bottom_left)
 			#pygame.time.delay(500)
 			pygame.display.update()
-	
-
-
-
+			game_quit()
 
 		 #pygame.display.update()
+
+def player_buttons(button):
+	#while True:
+		if button == 'y':
+			print('top_mid')
+
+			yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
+			pygame.display.update(yellow_rect)
+			
+			#pygame.time.delay(300)
+			pygame.event.pump()
+
+			yellow_rect = pygame.draw.rect(DISPLAY, white, top_mid)
+			#pygame.event.pump()
+			#pygame.time.delay(1500)
+			pygame.display.update(yellow_rect)
+			game_quit()
+			
+
+		elif button == 'b':
+			print('bottom_mid')
+
+			blue_rect  = pygame.draw.rect(DISPLAY, yellow_light, bottom_mid)
+			pygame.display.update(blue_rect)
+
+			#pygame.time.delay(300)
+			pygame.event.pump()
+
+			
+			blue_rect  = pygame.draw.rect(DISPLAY, white, bottom_mid)
+			#pygame.time.delay(500)
+			pygame.display.update(blue_rect)
+			game_quit()
+			
+
+		elif button == 'r':
+			print('bottom_right')
+			loop = 0
+			while loop < 15:
+				red_rect = pygame.draw.rect(DISPLAY, red_light, bottom_right)
+				pygame.display.update()
+				#pygame.time.delay(500)
+				loop += 1
+			red_rect = pygame.draw.rect(DISPLAY, white, bottom_right)
+			#pygame.time.delay(500)
+			pygame.display.update()
+			game_quit()
+		
+
+		elif button == 'g':
+			print('bottom_left')
+			loop = 0
+			while loop < 15:
+				green_rect  = pygame.draw.rect(DISPLAY, green_light, bottom_left)
+				pygame.display.update()
+				#pygame.time.delay(500)
+				loop += 1
+			green_rect  = pygame.draw.rect(DISPLAY, white, bottom_left)
+			#pygame.time.delay(500)
+			pygame.display.update()
+			game_quit()
 
 #def storing(): #Will go to show score & average once game ends
 
@@ -277,7 +348,7 @@ def simon_main():
 	player_pattern = [] # player's pattern 
 	score = 0    # player's score
 	wait_for_input = False # true when player has to repeat pattern
-	color_choices = ['y','b','r','g'] # different colors
+	color_choices = ['y','b'] # different colors
 	#print('Hello World!')
 
 	average = [] # Will need to hold previous scores then find the mean #average.append(score)
@@ -315,50 +386,64 @@ def simon_main():
 						if event.key == K_UP:
 							button = 'y'							
 							player_pattern.append('y')
-							light_buttons(button)							
+							player_buttons(button)							
 						elif event.key == K_DOWN:
 							button = 'b'							
 							player_pattern.append('b')
-							light_buttons(button)							
+							player_buttons(button)							
 						elif event.key == K_LEFT:
 							button = 'g'							
 							player_pattern.append('g')
-							light_buttons(button)							
+							player_buttons(button)							
 						elif event.key == K_RIGHT:
 							button = 'r'							
 							player_pattern.append('r')
-							light_buttons(button)
+							player_buttons(button)
 					elif event.type == pygame.MOUSEBUTTONDOWN:
 						mousey = pygame.mouse.get_pos()
 						#yellow
 						if  300 + 100 > mousey[0] > 300 and 100 + 100 > mousey[1] > 100:
 							button = 'y'							
 							player_pattern.append('y')
-							light_buttons(button)	
+							player_buttons(button)	
 
 						#blue
 						elif 300 + 100 > mousey[0] > 300 and 250 + 100 > mousey[1] > 250:
 							button = 'b'							
 							player_pattern.append('b')
-							light_buttons(button)	
+							player_buttons(button)	
 
 						#green
 						elif 450 + 100 > mousey[0] > 450 and 250 + 100 > mousey[1] > 250:
 							button = 'g'							
 							player_pattern.append('g')
-							light_buttons(button)	
+							player_buttons(button)	
 
 						#red
 						elif 150 + 100 > mousey[0] > 150 and 250 + 100 > mousey[1] > 250:
 							button = 'r'							
 							player_pattern.append('r')
-							light_buttons(button)	
+							player_buttons(button)	
 			
 
 			if player_pattern == pattern:
 				DISPLAY.blit(correctText, correctRect)
-				score += 1
-				wait_for_input = False
+				#rect(255, 403, 190, 35)
+				DISPLAY.blit(levelText, levelRect)
+				pygame.display.update()
+				#score += 1
+
+				game_quit()
+
+				for event in pygame.event.get():
+					if event.type == pygame.MOUSEBUTTONDOWN:
+						mousey = pygame.mouse.get_pos()
+						if 255 + 190 > mousey[0] > 255 and 403 + 35 > mousey[1] > 403:
+							score += 1
+							pygame.draw.rect(DISPLAY, black, (255, 403, 190, 35))
+							pygame.draw.rect(DISPLAY, black, (111, 410, 79, 21))
+
+							wait_for_input = False
 
 			elif player_pattern != pattern:
 				DISPLAY.blit(incorrectText, incorrectRect)
