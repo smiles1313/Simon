@@ -131,11 +131,11 @@ def simon_beginning():
 		for event in pygame.event.get():
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				mousey = pygame.mouse.get_pos()
-				if 52 + 97 > mousey[0] > 52 and 53 + 35 > mousey[1] > 53:
-					button_format()
+				if 52 + 97 > mousey[0] > 52 and 53 + 35 > mousey[1] > 53:   #If the startRect is clicked
+					button_format() 
 					x = False
 					#break
-				elif 558 + 85 > mousey[0] > 558 and 53 + 35 > mousey[1] > 53:
+				elif 558 + 85 > mousey[0] > 558 and 53 + 35 > mousey[1] > 53:   #If the exit button is clicked
 					pygame.quit()
 					sys.exit()
 		#print(game_time) 
@@ -155,7 +155,7 @@ def simon_beginning():
 
 
 
-def button_format():
+def button_format():  #Draws the original 4 buttons
 	game_quit()
 	DISPLAY.fill(screen_color)
 
@@ -179,96 +179,98 @@ def simon_play():
 		for event in pygame.event.get():
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				mousey = pygame.mouse.get_pos()
-				if 277 + 147 > mousey[0] > 277 and 390 + 21 > mousey[1] > 390:
+				if 277 + 147 > mousey[0] > 277 and 390 + 21 > mousey[1] > 390:   #If playRect is clicked
 					pygame.draw.rect(DISPLAY, black, playRect)
-					#button_format()
-					#pygame.draw.rect(DISPLAY, yellow_light, top_mid)
-					#pygame.draw.rect(DISPLAY, yellow_light, (10, 10, 50, 50))
 					pygame.display.update()
 					#print ('Hello')
 	
 					#pygame.display.update()
 					p = False
 
-def light_buttons(color):
-	#while True:
+def light_buttons(color):   #Lights button with delay when computer is generating patttern
 		if color == 'y':
 			print('top_mid')
 
-			yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
-			pygame.display.update(yellow_rect)
-			#print('i am sleeping')
-			#time.sleep(1)
-			#print('I slept for 10')
-			pygame.time.delay(1000)
-			pygame.event.pump()
+			last = pygame.time.get_ticks()
 
+			while (pygame.time.get_ticks() - last < 1000):   #Makes light flash longer & visible
+				yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
+				pygame.display.update(yellow_rect)
+
+				pygame.time.delay(700)
+				pygame.event.pump()
+	
 			yellow_rect = pygame.draw.rect(DISPLAY, white, top_mid)
-			#pygame.event.pump()
-			#pygame.time.delay(1500)
 			pygame.display.update(yellow_rect)
 			game_quit()
-			
+				
+
 
 		elif color == 'b':
 			print('bottom_mid')
 
-			blue_rect  = pygame.draw.rect(DISPLAY, yellow_light, bottom_mid)
-			pygame.display.update(blue_rect)
+			last = pygame.time.get_ticks()
 
-			pygame.time.delay(1000)
-			pygame.event.pump()
+			while (pygame.time.get_ticks() - last < 1000):  # ms need to be greater than pygame.time.delay() ms
+				blue_rect  = pygame.draw.rect(DISPLAY, yellow_light, bottom_mid)
+				pygame.display.update(blue_rect)
 
-			
+				pygame.time.delay(700)
+				pygame.event.pump()
+	
 			blue_rect  = pygame.draw.rect(DISPLAY, white, bottom_mid)
-			#pygame.time.delay(500)
 			pygame.display.update(blue_rect)
 			game_quit()
 			
 
 		elif color == 'r':
 			print('bottom_right')
-			loop = 0
-			while loop < 15:
+			
+			last = pygame.time.get_ticks()
+
+			while (pygame.time.get_ticks() - last < 1000):
 				red_rect = pygame.draw.rect(DISPLAY, red_light, bottom_right)
-				pygame.display.update()
-				#pygame.time.delay(500)
-				loop += 1
+				pygame.display.update(red_rect)
+			
+				pygame.time.delay(700)
+				pygame.event.pump()
+			
 			red_rect = pygame.draw.rect(DISPLAY, white, bottom_right)
-			#pygame.time.delay(500)
-			pygame.display.update()
+			pygame.display.update(red_rect)
 			game_quit()
 		
 
 		elif color == 'g':
 			print('bottom_left')
-			loop = 0
-			while loop < 15:
+
+			last = pygame.time.get_ticks()
+
+			while (pygame.time.get_ticks() - last < 1000):
 				green_rect  = pygame.draw.rect(DISPLAY, green_light, bottom_left)
-				pygame.display.update()
-				#pygame.time.delay(500)
-				loop += 1
+				pygame.display.update(green_rect)
+				
+				pygame.time.delay(700)
+				pygame.event.pump()
+
 			green_rect  = pygame.draw.rect(DISPLAY, white, bottom_left)
-			#pygame.time.delay(500)
-			pygame.display.update()
+			pygame.display.update(green_rect)
 			game_quit()
 
 		 #pygame.display.update()
 
-def player_buttons(button):
-	#while True:
+def player_buttons(button):   #Lights buttons when player clicks or presses keys with no delay
 		if button == 'y':
 			print('top_mid')
 
-			yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
-			pygame.display.update(yellow_rect)
+			last = pygame.time.get_ticks()
+
+			while (pygame.time.get_ticks() - last < 500):
+				yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
+				pygame.display.update(yellow_rect)
 			
-			#pygame.time.delay(300)
-			pygame.event.pump()
+				pygame.event.pump()
 
 			yellow_rect = pygame.draw.rect(DISPLAY, white, top_mid)
-			#pygame.event.pump()
-			#pygame.time.delay(1500)
 			pygame.display.update(yellow_rect)
 			game_quit()
 			
@@ -276,50 +278,54 @@ def player_buttons(button):
 		elif button == 'b':
 			print('bottom_mid')
 
-			blue_rect  = pygame.draw.rect(DISPLAY, yellow_light, bottom_mid)
-			pygame.display.update(blue_rect)
+			last = pygame.time.get_ticks()
 
-			#pygame.time.delay(300)
-			pygame.event.pump()
+			while (pygame.time.get_ticks() - last < 500):
+				blue_rect  = pygame.draw.rect(DISPLAY, yellow_light, bottom_mid)
+				pygame.display.update(blue_rect)
 
-			
+				pygame.event.pump()
+
 			blue_rect  = pygame.draw.rect(DISPLAY, white, bottom_mid)
-			#pygame.time.delay(500)
 			pygame.display.update(blue_rect)
 			game_quit()
 			
 
 		elif button == 'r':
 			print('bottom_right')
-			loop = 0
-			while loop < 15:
+		
+			last = pygame.time.get_ticks()
+
+			while (pygame.time.get_ticks() - last < 500):
 				red_rect = pygame.draw.rect(DISPLAY, red_light, bottom_right)
-				pygame.display.update()
-				#pygame.time.delay(500)
-				loop += 1
+				pygame.display.update(red_rect)
+
+				pygame.event.pump()
+		
 			red_rect = pygame.draw.rect(DISPLAY, white, bottom_right)
-			#pygame.time.delay(500)
-			pygame.display.update()
+			pygame.display.update(red_rect)
 			game_quit()
 		
 
 		elif button == 'g':
 			print('bottom_left')
-			loop = 0
-			while loop < 15:
+			
+			last = pygame.time.get_ticks()
+
+			while (pygame.time.get_ticks() - last < 500):
 				green_rect  = pygame.draw.rect(DISPLAY, green_light, bottom_left)
-				pygame.display.update()
-				#pygame.time.delay(500)
-				loop += 1
+				pygame.display.update(green_rect)
+				
+				pygame.event.pump()
+
 			green_rect  = pygame.draw.rect(DISPLAY, white, bottom_left)
-			#pygame.time.delay(500)
-			pygame.display.update()
+			pygame.display.update(green_rect)
 			game_quit()
 
 #def storing(): #Will go to show score & average once game ends
 
 
-def simon_end():
+def simon_end():   #End screen for the game
 	game_quit()
 	#pygame.time.delay(300)
 	DISPLAY.fill(screen_color)
@@ -427,12 +433,12 @@ def simon_main():
 			
 
 			if player_pattern == pattern:
+				#score += 1
 				DISPLAY.blit(correctText, correctRect)
 				#rect(255, 403, 190, 35)
 				DISPLAY.blit(levelText, levelRect)
-				pygame.display.update()
 				#score += 1
-
+				#pygame.display.update()
 				game_quit()
 
 				for event in pygame.event.get():
