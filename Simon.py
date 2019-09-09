@@ -2,19 +2,16 @@
 import pygame, sys, random, time
 from pygame.locals import *
 
+#Sets Pygame window and main function
 pygame.init()
 DISPLAY = pygame.display.set_mode((700, 500))
 pygame.display.set_caption('Simon')
 fpsClock = pygame.time.Clock()
 game_time = fpsClock.tick(60)
 
-pygame.init()
-DISPLAY = pygame.display.set_mode((700, 500))
-pygame.display.set_caption('Simon')
-fpsClock = pygame.time.Clock()
-game_time = fpsClock.tick(60)
 
 #Colors
+
 white        = (255, 255, 255)
 black        = (0, 0, 0)
 
@@ -28,63 +25,76 @@ green        = (0, 128, 0)
 green_light  = (0, 255, 0)
 screen_color = black
 
+
 #Text
+
+#Different sized fonts
 font1 = pygame.font.Font('freesansbold.ttf', 50)
 font2 = pygame.font.Font('freesansbold.ttf', 20)
 font3 = pygame.font.Font('freesansbold.ttf', 34)
 
-titleText = font1.render('Simon', True, black, white) #Title of the game displayed
+#Title of the game displayed
+titleText = font1.render('Simon', True, black, white)
 titleRect = titleText.get_rect()
 titleRect.center = (350, 230)
 
-startText = font3.render(' Start ', True, white, black) #Start game button
+#Start game button
+startText = font3.render(' Start ', True, white, black) 
 startRect = startText.get_rect()
 startRect.center = (100, 70)
 
-exitText = font3.render(' Exit ', True, white, black) #Exit game button
+#Exit game button
+exitText = font3.render(' Exit ', True, white, black) 
 exitRect = exitText.get_rect()
 exitRect.center = (600, 70)
 
-directionsText = font2.render(' Use the arrow keys to repeat the pattern on the screen. ', True, black, white) #How to play game directions
+#How to play game directions
+directionsText = font2.render(' Use the arrow keys to repeat the pattern on the screen. ', True, black, white) 
 directionsRect  = directionsText.get_rect()
 directionsRect.center = (350, 330)
 
-playText = font2.render(' Begin Playing ', True, black, white) #Button to click to begin playing and first pattern
+#Button to click to begin playing and first pattern
+playText = font2.render(' Begin Playing ', True, black, white) 
 playRect = playText.get_rect()
 playRect.center = (350, 400)
 
-correctText = font2.render('Correct!', True, white, black) #Shows when player repeats pattern correctly
+#Shows when player repeats pattern correctly
+correctText = font2.render('Correct!', True, white, black) 
 correctRect = correctText.get_rect()
 correctRect.center = (150, 100)
 
-incorrectText = font2.render('Incorrect.', True, white, black) #Shows when the player's pattern is incorrect
+#Shows when the player's pattern is incorrect
+incorrectText = font2.render('Incorrect.', True, white, black) 
 incorrectRect = incorrectText.get_rect()
 incorrectRect.center = (350, 450)
 
-levelText = font3.render(' Next Level ', True, blue, white) #Click to go to next "level" when previous was completed
+#Click to go to next "level" when previous was completed
+levelText = font3.render(' Next Level ', True, blue, white) 
 levelRect = levelText.get_rect()
 levelRect.center = (350, 420)
 
-
-playagainText = font3.render(' Play Again ', True, black, white) #Play Again Button at end of game
+#Play Again Button at end of game
+playagainText = font3.render(' Play Again ', True, black, white) 
 playagainRect = playagainText.get_rect()
 playagainRect.center = (120,70)
 
-exit2Text = font3.render(' Exit ', True, black, white) #Exit Button at end of game
+#Exit Button at end of game
+exit2Text = font3.render(' Exit ', True, black, white) 
 exit2Rect = exit2Text.get_rect()
 exit2Rect.center = (600, 70)
 
 #Buttons
-top_mid    = pygame.Rect(300, 100, 100, 100)
+
+top_mid    = pygame.Rect(300, 100, 100, 100) 
 #yellow_rect = pygame.draw.rect(DISPLAY, yellow, top_mid)
 
-bottom_mid = pygame.Rect(300, 250, 100, 100)
+bottom_mid = pygame.Rect(300, 250, 100, 100) 
 #blue_rect  = pygame.draw.rect(DISPLAY, blue, bottom_mid)
 
-bottom_right = pygame.Rect(450, 250, 100, 100)
+bottom_right = pygame.Rect(450, 250, 100, 100) 
 #red_rect = pygame.draw.rect(DISPLAY, red, bottom_right)
 
-bottom_left  = pygame.Rect(150, 250, 100, 100)
+bottom_left  = pygame.Rect(150, 250, 100, 100) 
 #green_rect  = pygame.draw.rect(DISPLAY, green, bottom_left)
 
 patternspeed = 450 #milliseconds
@@ -105,31 +115,36 @@ def simon_beginning():
 	DISPLAY.blit(directionsText, directionsRect)
 	pygame.display.update()
 
+	#Will check to see if one of the buttons(or red x) has been clicked to move on
 	x = True 
 	while x == True:
 		game_quit()
 		for event in pygame.event.get():
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				mousey = pygame.mouse.get_pos()
-				if 52 + 97 > mousey[0] > 52 and 53 + 35 > mousey[1] > 53:   #If the startRect is clicked
+				#If the startRect is clicked
+				if 52 + 97 > mousey[0] > 52 and 53 + 35 > mousey[1] > 53:
 					button_format() 
 					x = False
-					#break
-				elif 558 + 85 > mousey[0] > 558 and 53 + 35 > mousey[1] > 53:   #If the exit button is clicked
+
+					#If the exit button is clicked
+				elif 558 + 85 > mousey[0] > 558 and 53 + 35 > mousey[1] > 53: 
 					pygame.quit()
 					sys.exit()
 
-
-def button_format():  #Draws the original 4 buttons
+#Draws the original 4 buttons
+def button_format():
 	game_quit()
 	DISPLAY.fill(screen_color)
 
+	#All the rectangles start off white to make flash very visible
 	yellow_rect = pygame.draw.rect(DISPLAY, white, top_mid)
 	blue_rect  = pygame.draw.rect(DISPLAY, white, bottom_mid)
 	red_rect = pygame.draw.rect(DISPLAY, white, bottom_right)
 	green_rect  = pygame.draw.rect(DISPLAY, white, bottom_left)
 	pygame.display.update()
 
+#Checks to see if the "Begin Playing" button is clicked to continue. Makes sure player is ready.
 def simon_play():
 	#game_quit()
 	DISPLAY.blit(playText, playRect) #playRect == rect(277, 390, 147, 21)
@@ -142,19 +157,23 @@ def simon_play():
 		for event in pygame.event.get():
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				mousey = pygame.mouse.get_pos()
-				if 277 + 147 > mousey[0] > 277 and 390 + 21 > mousey[1] > 390:   #If playRect is clicked
+				#If playRect is clicked
+				if 277 + 147 > mousey[0] > 277 and 390 + 21 > mousey[1] > 390: 
 					pygame.draw.rect(DISPLAY, black, playRect)
 					pygame.display.update()
 		
 					p = False
 
 
-def light_buttons(color):   #Lights button with delay when computer is generating patttern
+
+#Lights button with delay when computer is generating patttern
+def light_buttons(color): 
+		#yellow
 		if color == 'y':
 
 			last = pygame.time.get_ticks()
-
-			while (pygame.time.get_ticks() - last < 800):   #Makes light flash longer & visible
+			#Makes light flash longer & visible
+			while (pygame.time.get_ticks() - last < 800): 
 				yellow_rect = pygame.draw.rect(DISPLAY, yellow_light, top_mid)
 				pygame.display.update(yellow_rect)
 
@@ -166,12 +185,12 @@ def light_buttons(color):   #Lights button with delay when computer is generatin
 			game_quit()
 				
 
-
+		#blue
 		elif color == 'b':
 
 			last = pygame.time.get_ticks()
-
-			while (pygame.time.get_ticks() - last < 800):  # ms need to be greater than pygame.time.delay() ms
+ 			# ms need to be greater than pygame.time.delay() ms
+			while (pygame.time.get_ticks() - last < 800): 
 				blue_rect  = pygame.draw.rect(DISPLAY, blue_light, bottom_mid)
 				pygame.display.update(blue_rect)
 
@@ -182,7 +201,7 @@ def light_buttons(color):   #Lights button with delay when computer is generatin
 			pygame.display.update(blue_rect)
 			game_quit()
 			
-
+		#red
 		elif color == 'r':
 			
 			last = pygame.time.get_ticks()
@@ -198,7 +217,7 @@ def light_buttons(color):   #Lights button with delay when computer is generatin
 			pygame.display.update(red_rect)
 			game_quit()
 		
-
+		#green
 		elif color == 'g':
 
 			last = pygame.time.get_ticks()
@@ -215,7 +234,10 @@ def light_buttons(color):   #Lights button with delay when computer is generatin
 			game_quit()
 
 
-def player_buttons(button):   #Lights buttons when player clicks or presses keys with no delay
+
+#Lights buttons when player clicks or presses keys with NO DELAY
+def player_buttons(button): 
+		#yellow
 		if button == 'y':
 
 			last = pygame.time.get_ticks()
@@ -231,6 +253,7 @@ def player_buttons(button):   #Lights buttons when player clicks or presses keys
 			game_quit()
 			
 
+		#blue
 		elif button == 'b':
 
 			last = pygame.time.get_ticks()
@@ -246,6 +269,7 @@ def player_buttons(button):   #Lights buttons when player clicks or presses keys
 			game_quit()
 			
 
+		#red
 		elif button == 'r':
 		
 			last = pygame.time.get_ticks()
@@ -261,6 +285,7 @@ def player_buttons(button):   #Lights buttons when player clicks or presses keys
 			game_quit()
 		
 
+		#green
 		elif button == 'g':
 			
 			last = pygame.time.get_ticks()
@@ -276,10 +301,12 @@ def player_buttons(button):   #Lights buttons when player clicks or presses keys
 			game_quit()
 
 
-def simon_end():   #End screen for the game
+
+#End screen for the game
+def simon_end():
 	game_quit()
 
-	DISPLAY.fill(black)
+	DISPLAY.fill(black) #Provides new slate/blank screen
 	DISPLAY.blit(incorrectText, incorrectRect)
 	DISPLAY.blit(exit2Text, exit2Rect)
 	DISPLAY.blit(playagainText, playagainRect)
@@ -295,20 +322,24 @@ def simon_end():   #End screen for the game
 	for event in pygame.event.get():
 		if event.type == pygame.MOUSEBUTTONDOWN:
 			mousey = pygame.mouse.get_pos()
-			if 22 + 196 > mousey[0] > 22 and 52 + 36 > mousey[1] > 52:   #If the playagainRect is clicked
+			#If the playagainRect is clicked
+			if 22 + 196 > mousey[0] > 22 and 52 + 36 > mousey[1] > 52: 
 				button_format() 
 				simon_main()
-			elif 558 + 85 > mousey[0] > 558 and 53 + 35 > mousey[1] > 53:   #If the exit button is clicked
+			#If the exit button is clicked
+			elif 558 + 85 > mousey[0] > 558 and 53 + 35 > mousey[1] > 53:
 				pygame.quit()
 				sys.exit()
 
 
-
+#Checks to see if red x (to close the window) is clicked. Will exterminate program if it was clicked.
 def game_quit():
 	for event in pygame.event.get(QUIT): 
 		pygame.quit()
 		sys.exit()
 
+
+#Puts all the 'mini' functions in here to make whole game
 def simon_main():
 
 	simon_beginning()
@@ -328,6 +359,8 @@ def simon_main():
 	wait_for_input = False # true when player has to repeat pattern
 	color_choices = ['y','b','r','g'] # different colors
 	
+
+	#main game loop
 	while True:
 		game_quit()
 
@@ -338,6 +371,7 @@ def simon_main():
 		scoreRect.center = (550, 30)
 		DISPLAY.blit(scoreText, scoreRect)
 
+		#Computer pattern (if player is not repeating)
 		if wait_for_input == False:
 
 			player_pattern.clear()
@@ -347,30 +381,35 @@ def simon_main():
 				wait_for_input = True
 				
 
+		#Player's turn to repeat pattern
 		else:
+			#loop for if player is still not done repeating pattern
 			while len(player_pattern) != len(pattern):
 				game_quit()
 
+				
 				for event in pygame.event.get():
+					#checks for keyboard arrow key presses
 					if event.type == KEYDOWN:
 						if event.key == K_UP:
-							button = 'y'							
+							button = 'y'					#yellow						
 							player_pattern.append('y')
 							player_buttons(button)							
 						elif event.key == K_DOWN:
-							button = 'b'							
+							button = 'b'					#blue					
 							player_pattern.append('b')
 							player_buttons(button)							
 						elif event.key == K_LEFT:
-							button = 'g'							
+							button = 'g'					#green				
 							player_pattern.append('g')
 							player_buttons(button)							
 						elif event.key == K_RIGHT:
-							button = 'r'							
+							button = 'r'					#red						
 							player_pattern.append('r')
 							player_buttons(button)
 
 
+					#checks for mouse or mousepad clicks on buttons
 					elif event.type == pygame.MOUSEBUTTONDOWN:
 						mousey = pygame.mouse.get_pos()
 						#yellow
@@ -397,7 +436,7 @@ def simon_main():
 							player_pattern.append('g')
 							player_buttons(button)	
 			
-
+			#if the player repeated the pattern correctly
 			if player_pattern == pattern:
 				DISPLAY.blit(correctText, correctRect)
 				#rect(111, 90, 79, 21)
@@ -409,6 +448,7 @@ def simon_main():
 				for event in pygame.event.get():
 					if event.type == pygame.MOUSEBUTTONDOWN:
 						mousey = pygame.mouse.get_pos()
+						#if the "Next Level" button is clicked
 						if 255 + 190 > mousey[0] > 255 and 403 + 35 > mousey[1] > 403:
 							score += 1
 							pygame.draw.rect(DISPLAY, black, (255, 403, 190, 35))
@@ -416,6 +456,7 @@ def simon_main():
 
 							wait_for_input = False
 
+			#if the player repeated the pattern incorrectly
 			elif player_pattern != pattern:
 				simon_end()
 			pygame.display.update()
